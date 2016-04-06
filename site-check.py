@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from flask import Flask, jsonify, abort
+from flask import Flask, jsonify, abort, redirect, Response, Markup
 
 app=Flask(__name__)
 
@@ -22,11 +22,28 @@ site = [
 	}
 ]
 
+@app.after_request
+def author(response):
+	
+	response.headers['Author'] = 'Savithru M Lokanath, Dr.Levi Perigo'
+	response.headers['Contact'] = 'savithru at colorado dot edu'
+	return response
+
 @app.route('/')
 def index():
 	
-	return 'Goto /api/ngn/<good/bad>'
+	return Markup('<h2>Goto /api/ngn/<good/bad></h2>')
+
+@app.route('/api/')
+def minion():
 	
+	return redirect('http://24.media.tumblr.com/130f821e0c1c0ba7490622aa870ffe96/tumblr_n4iuliOlHb1tziei6o1_500.gif')
+	
+@app.route('/api/ngn/')
+def parameters():
+	
+	return Markup('<h2>Add /good OR /bad to the request URL</h2>')
+
 @app.route('/api/ngn/<id>', methods=["GET"])
 def data(id):
 	
